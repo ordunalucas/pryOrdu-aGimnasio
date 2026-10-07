@@ -5,6 +5,8 @@ namespace pryOrduñaGimnasio
         const decimal PRECIO_NATACION = 22000;
         const decimal PRECIO_MUSCULACION = 15000;
         const decimal PRECIO_FUNCIONAL = 18000;
+
+        const decimal PRECIO_CASILLERO = 3000;
         const int EDAD_MINIMA = 14;
         const decimal DESCUENTO_MENOR = 0.10m;
         const decimal DESCUENTO_MAYOR = 0.30m;
@@ -70,6 +72,72 @@ namespace pryOrduñaGimnasio
                 MessageBox.Show("La cantidad de meses debe estar comprendida entre 1 y 12.", "RANGO DE MESES INVALIDO", MessageBoxButtons.OK);
                 return;
             }
+
+
+
+
+            Decimal precioMensual = 0m;
+            string horario = "";
+
+            string planSeleccionado=cboPlan.Text;
+
+            switch (planSeleccionado)
+            {
+                case "Musculacion": precioMensual = PRECIO_MUSCULACION; break;
+
+                case "Funcional": precioMensual = PRECIO_FUNCIONAL; break;
+
+                case "Natacion": precioMensual = PRECIO_NATACION; break;
+            }
+
+
+            int indiceTurno = cboTurno.SelectedIndex;
+
+            switch (indiceTurno)
+            {
+                case 0 : horario = "7 a 12hs"; break;
+
+                case 1 : horario = "14 a 18hs"; break;
+
+                case 2: horario = "18 a 23hs"; break;
+
+                default: horario = "No especificado"; break;
+            }
+
+
+
+
+            if (chkCasillero.Checked) precioMensual += PRECIO_CASILLERO;
+
+            decimal subtotal = precioMensual * meses;
+
+
+
+            decimal porcentajeDescuento = 0m;
+
+            if (edad < 18)
+            {
+                porcentajeDescuento = 0.25m;
+            }
+            else
+            {
+                if (edad >= 65)
+                {
+                    porcentajeDescuento = 0.30m;
+                } 
+                else if (chkEstudiante.Checked)
+                {
+                    porcentajeDescuento = 0.15m;
+                }
+                else
+                {
+                    porcentajeDescuento = 0m;
+                }
+            }
+
+
+            decimal importeDescuento = subtotal * porcentajeDescuento;
+            decimal subtotalConDescuento = subtotal - importeDescuento;
         }
 
         private void btnCalcular_TextChanged(object sender, EventArgs e)
